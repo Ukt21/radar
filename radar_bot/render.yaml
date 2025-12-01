@@ -3,5 +3,5 @@ services:
     name: radar-bot
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python -m app.main
+    startCommand: python -m main.py
     autoDeploy: true
