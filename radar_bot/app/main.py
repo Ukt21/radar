@@ -3,7 +3,9 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from radar_bot.app.config import BOT_TOKEN
-from app.handlers import start, analyze, liquidity, btc
+from .handlers import start, analyze, liquidity, btc
+from .utils import 
+from .routes import 
 
 async def main():
     bot = Bot(BOT_TOKEN, parse_mode="HTML")
