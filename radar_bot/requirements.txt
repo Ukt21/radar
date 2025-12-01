@@ -1,10 +1,6 @@
 fastapi
 uvicorn[standard]
-httpx
-python-dotenv
-services:
-  - type: web
-    name: radar-backend
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
+httpxaiogram==3.13.0
+httpx>=0.27.0
+python-dotenv>=1.0.0
+
