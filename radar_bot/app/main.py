@@ -2,7 +2,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from app.config import BOT_TOKEN
+from radar_bot.app.config import BOT_TOKEN
 from app.handlers import start, analyze, liquidity, btc
 
 async def main():
