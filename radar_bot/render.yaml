@@ -1,7 +1,12 @@
 services:
   - type: web
-    name: radar-bot
+    name: radar
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python -m main.py
-    autoDeploy: true
+    plan: free
+    buildCommand: "pip install -r radar_bot/requirements.txt"
+    startCommand: "python -m radar_bot.app.main"
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: BACKEND_URL
+        sync: false
