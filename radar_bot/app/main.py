@@ -1,29 +1,20 @@
 import asyncio
 import os
+
 from aiogram import Bot, Dispatcher
-from aiogram.client.default import DefaultBotProperties
-from aiogram.fsm.storage.memory import MemoryStorage
-from .handlers import ai_menu  # путь под твой проект
+from aiogram.enums import ParseMode
 
-dp.include_router(ai_menu.router)dp = Dispatcher()
+from .ai_menu import router as ai_menu_router
 
-from .config import BOT_TOKEN
-from .handlers import start, analyze, liquidity, btc
 
 async def main():
-    if not BOT_TOKEN:
-        raise RuntimeError("BOT_TOKEN is not set in environment variables")
+    bot = Bot(token=os.getenv("BOT_TOKEN"), parse_mode=ParseMode.HTML)
+    dp = Dispatcher()
 
-    bot = Bot(
-        BOT_TOKEN,
-        default=DefaultBotProperties(parse_mode="HTML"),
-    )
-    dp = Dispatcher(storage=MemoryStorage())
+    # Подключаем роутеры
+    dp.include_router(ai_menu_router)
 
-    dp.include_router(start.router)
-    dp.include_router(analyze.router)
-    dp.include_router(liquidity.router)
-    dp.include_router(btc.router)
+    print("🚀 Radar backend started")
 
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
