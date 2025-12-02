@@ -1,7 +1,6 @@
 from aiogram import Router, types
 from aiogram.filters import Command
-
-from keyboards.ai_menu import (
+from ..keyboards.ai_menu import (
     ai_main_menu,
     ai_symbol_menu,
     ai_timeframe_menu,
@@ -9,6 +8,8 @@ from keyboards.ai_menu import (
     ai_result_menu,
     ai_profile_menu,
 )
+
+
 from ai_client import get_ai_analysis, get_ai_analysis_image
 
 router = Router()
