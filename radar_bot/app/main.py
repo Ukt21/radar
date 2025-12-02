@@ -2,7 +2,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.fsm.storage.memory import MemoryStorage
-from handlers import ai_menu  # путь под твой проект
+from .handlers import ai_menu  # путь под твой проект
 
 dp.include_router(ai_menu.router)
 
