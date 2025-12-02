@@ -13,16 +13,56 @@ app = FastAPI(title="Radar Backend", version="1.0.0")
 async def health() -> Dict[str, str]:
     return {"status": "ok"}
 
-
 @app.get("/analyze")
-async def analyze(
-    symbol: str = Query(..., description="Тикер монеты, например SUIUSDT"),
-    tf: str = Query("1h", description="Таймфрейм Binance, например 1h, 4h"),
-) -> Dict[str, Any]:
-    # Данные по альткоину
-    alt_klines = await fetch_klines(symbol, interval=tf)
-    if not alt_klines:
-        raise HTTPException(status_code=400, detail="Не удалось получить данные по монете.")
+async def analyze(symbol: str = Query(..., min_length=2), tf: str = "1h"):
+    """
+    Возвращает подробный текстовый анализ:
+    техника + AI-сценарий + киты.
+    Ответ по-прежнему в поле 'analysis', чтобы бот ничего не ломался.
+    """
+    symbol = symbol.upper()
+
+    # Техника по альту и по BTC
+    symbol_signals = build_signals(symbol, tf)
+    btc_signals = build_signals("BTC", tf)
+
+    # Кошельки китов
+    whales_text = await summarize_whales()
+
+    # GPT-анализ
+    ai_text = make_ai_analysis(symbol_signals, btc_signals, whales_text)
+
+    # Финальный текст, который увидит пользователь в боте
+    analysis_parts = []
+
+    analysis_parts.append(
+        f"📊 Технический снимок по {symbol_signals['symbol']} "
+        f"({symbol_signals['timeframe']}):\n"
+        f"- Цена: {symbol_signals['price']:.4f} USDT\n"
+        f"- Тренд по EMA50/200: {symbol_signals['trend']}\n"
+        f"- RSI(14): {symbol_signals['rsi']} ({symbol_signals['rsi_state']})\n"
+        f"- EMA50: {symbol_signals['ema50']}, EMA200: {symbol_signals['ema200']}\n"
+        f"- OBV: {symbol_signals['obv']}\n"
+        f"- Объём: {symbol_signals['volume_state']}\n"
+        f"- Средняя внутридневная волатильность ~{symbol_signals['volatility']}%\n"
+    )
+
+    analysis_parts.append(
+        f"₿ BTC ({btc_signals['timeframe']}):\n"
+        f"- Цена: {btc_signals['price']:.2f} USDT\n"
+        f"- Тренд: {btc_signals['trend']}, RSI: {btc_signals['rsi']} "
+        f"({btc_signals['rsi_state']})\n"
+        f"- Волатильность BTC ~{btc_signals['volatility']}%\n"
+    )
+
+    analysis_parts.append("🐋 Кошельки китов (BTC):\n" + whales_text)
+
+    analysis_parts.append("🤖 AI-сценарий (GPT):\n" + ai_text)
+
+    full_text = "\n\n".join(analysis_parts)
+
+    return {"analysis": full_text}
+
 
     # Данные по BTC
     btc_klines = await fetch_klines("BTCUSDT", interval=tf)
