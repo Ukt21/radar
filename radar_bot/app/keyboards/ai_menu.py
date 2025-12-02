@@ -1,12 +1,4 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from ..keyboards.ai_menu import (
-    ai_main_menu,
-    ai_symbol_menu,
-    ai_timeframe_menu,
-    ai_mode_menu,
-    ai_result_menu,
-    ai_profile_menu,
-)
 
 
 def ai_main_menu():
