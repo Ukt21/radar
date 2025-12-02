@@ -1,14 +1,10 @@
 import asyncio
-import httpx
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from .config import BOT_TOKEN
 from .handlers import start, analyze, liquidity, btc
-
-async with httpx.AsyncClient(timeout=10.0) as client:
-    r = await client.get(WEBHOOK_URL)
 
 async def main():
     if not BOT_TOKEN:
