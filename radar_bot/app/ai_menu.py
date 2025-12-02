@@ -1,31 +1,40 @@
-from aiogram import Router
+from aiogram import Router, types
 from aiogram.filters import Command
-from aiogram.types import Message
+
+from .keyboards import market_menu, timeframe_menu
 
 router = Router()
 
 
 @router.message(Command("ai_menu"))
-async def cmd_ai_menu(message: Message):
-    """
-    Простая команда для проверки, что router работает.
-    """
+async def ai_menu(message: types.Message):
     await message.answer(
-        "👋 Привет! Это AI-меню радар-бота.\n\n"
-        "Пока я просто тестовая команда.\n"
-        "Скоро здесь будет:\n"
-        "• AI-анализ рынка\n"
-        "• Картинка с анализом\n"
-        "• Меню с кнопками для выбора пары и таймфрейма."
+        "📊 <b>AI-меню</b>\n"
+        "Выбери торговую пару:",
+        reply_markup=market_menu()
     )
 
 
-@router.message(Command("start"))
-async def cmd_start(message: Message):
-    """
-    Базовая /start через backend-worker.
-    """
-    await message.answer(
-        "🚀 Radar backend запущен.\n"
-        "Напиши /ai_menu, чтобы проверить AI-меню."
+@router.callback_query(lambda c: c.data.startswith("pair_"))
+async def select_pair(callback: types.CallbackQuery):
+    pair = callback.data.replace("pair_", "").upper()
+    await callback.message.edit_text(
+        f"Пара выбрана: <b>{pair}</b>\nТеперь выбери таймфрейм:",
+        reply_markup=timeframe_menu()
+    )
+    await callback.answer()
+
+
+@router.callback_query(lambda c: c.data.startswith("tf_"))
+async def select_timeframe(callback: types.CallbackQuery):
+    tf = callback.data.replace("tf_", "")
+
+    await callback.answer("⚡ Выполняю AI-анализ, подожди 2–3 секунды...")
+
+    # Здесь позже подключим OPENAI + генерацию картинки
+    await callback.message.edit_text(
+        f"🔍 <b>AI-анализ</b>\n"
+        f"Пара: BTC/USDT\n"
+        f"Таймфрейм: {tf}\n\n"
+        f"❗ [Тут будет твой реальный AI-анализ с картинкой 🔥]"
     )
