@@ -7,3 +7,4 @@ python-dotenv>=1.0.0
 ccxt
 pandas
 openai>=1.40.0
+pillow
