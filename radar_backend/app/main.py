@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException, Query
 from typing import Dict, Any
 
-from .services.market import fetch_klines
-from .services.indicators import ema, rsi, obv, build_summary
-from .services.liquidity import detect_liquidity_levels
+from fastapi import FastAPI, Query
+from .services.market import build_signals
+from .services.whales import summarize_whales
+from .services.ai_analysis import make_ai_analysis
 
 app = FastAPI(title="Radar Backend", version="1.0.0")
 
