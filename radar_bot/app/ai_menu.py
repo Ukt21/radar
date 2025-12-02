@@ -5,7 +5,7 @@ from aiogram import Router, types, F
 from aiogram.filters import Command
 from openai import OpenAI
 
-from .keyboards import market_menu, timeframe_menu, PAIRS
+from .inline_keyboards import market_menu, timeframe_menu, PAIRS
 
 router = Router()
 
