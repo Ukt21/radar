@@ -1,6 +1,5 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-# Коды пар: короткий код → красивое название
 PAIRS = {
     "btc": "BTC/USDT",
     "eth": "ETH/USDT",
@@ -25,7 +24,6 @@ def market_menu() -> InlineKeyboardMarkup:
 
 
 def timeframe_menu(pair_code: str) -> InlineKeyboardMarkup:
-    # pair_code: btc / eth / ...
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -44,9 +42,10 @@ def timeframe_menu(pair_code: str) -> InlineKeyboardMarkup:
             ],
             [
                 InlineKeyboardButton(
-                    text="← Другую пару",
+                    text="← Назад",
                     callback_data="back:markets",
                 )
             ],
         ]
     )
+
