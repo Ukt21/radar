@@ -1,8 +1,9 @@
 from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+from ..keyboards.menu import main_menu
 
-from app.services.api_client import backend_get
+from ..services.api_client import backend_get
 
 router = Router()
 
