@@ -6,7 +6,7 @@ import httpx
 from fastapi import FastAPI, Response
 from pydantic import BaseModel
 from openai import OpenAI
-from pillow import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 
 # ---------- Настройки ----------
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
