@@ -1,5 +1,5 @@
 from aiogram import Router, types
-from app.keyboards.menu import main_menu
+from ..keyboards.menu import main_menu
 
 router = Router()
 
