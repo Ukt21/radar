@@ -1,28 +1,30 @@
 import asyncio
 from aiogram import Bot, Dispatcher
-from aiogram.enums import ParseMode
+from aiogram.client.default import DefaultBotProperties
+from aiogram.fsm.storage.memory import MemoryStorage
 
-from app.config import BOT_TOKEN
-from app.handlers.start import router as start_router
-from app.handlers.analyze import router as analyze_router
-from app.handlers.liquidity import router as liquidity_router
-from app.handlers.btc import router as btc_router
+from .config import BOT_TOKEN
+from .handlers import start, analyze, liquidity, btc
+
 
 async def main():
-    bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
-    dp = Dispatcher()
+    if not BOT_TOKEN:
+        raise RuntimeError("BOT_TOKEN is not set in environment variables")
 
-    # REGISTER ROUTERS
-    dp.include_router(start_router)
-    dp.include_router(analyze_router)
-    dp.include_router(liquidity_router)
-    dp.include_router(btc_router)
+    bot = Bot(
+        BOT_TOKEN,
+        default=DefaultBotProperties(parse_mode="HTML"),
+    )
+    dp = Dispatcher(storage=MemoryStorage())
 
-    print("🚀 Radar Bot started...")
+    dp.include_router(start.router)
+    dp.include_router(analyze.router)
+    dp.include_router(liquidity.router)
+    dp.include_router(btc.router)
+
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
+
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except (KeyboardInterrupt, SystemExit):
-        print("Bot stopped!")
+    asyncio.run(main())
