@@ -1,5 +1,5 @@
 import httpx
-from app.config import BACKEND_URL
+from ..config import BACKEND_URL
 
 async def backend_get(path: str, params: dict | None = None):
     url = f"{BACKEND_URL}{path}"
