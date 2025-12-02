@@ -9,26 +9,22 @@ from .inline_keyboards import market_menu, timeframe_menu, PAIRS
 
 router = Router()
 
-# клиент OpenAI (использует OPENAI_API_KEY из ENV)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 async def _generate_ai_analysis(pair: str, timeframe: str) -> str:
-    """
-    Запрос к GPT: текстовый анализ рынка.
-    """
     prompt = f"""
 Ты профессиональный крипто-трейдер и аналитик.
 Сделай краткий, структурированный анализ по инструменту {pair} на таймфрейме {timeframe}.
 
-Структура ответа:
+Структура:
 1) Общий контекст рынка.
-2) Ключевые уровни (поддержки/сопротивления) — в виде списка.
+2) Ключевые уровни (поддержка/сопротивление).
 3) Сценарий LONG.
 4) Сценарий SHORT.
-5) Риски и на что смотреть (объёмы, новости, уровни).
+5) Риски и на что обратить внимание.
 
-Пиши ёмко, без воды, как для трейдера. Не давай финансовых советов, только аналитическое мнение.
+Пиши по делу, без воды. Не давай финансовых советов, только аналитическое мнение.
     """.strip()
 
     loop = asyncio.get_running_loop()
@@ -45,9 +41,6 @@ async def _generate_ai_analysis(pair: str, timeframe: str) -> str:
 
 
 async def _generate_ai_image(pair: str, timeframe: str, analysis_short: str) -> str:
-    """
-    Запрос к OpenAI на генерацию картинки. Возвращает URL.
-    """
     img_prompt = f"""
 Minimalistic dark trading dashboard, crypto chart for {pair} on timeframe {timeframe},
 with clear trend, support/resistance zones and arrows showing possible scenarios.
@@ -69,14 +62,28 @@ No text on image. Premium design, neon accents, professional trading interface.
     return url
 
 
+# ---------- COMMANDS ----------
+
+@router.message(Command("start"))
+async def cmd_start(message: types.Message):
+    await message.answer(
+        "🚀 <b>Radar AI</b>\n\n"
+        "Я делаю премиальный AI-анализ рынка.\n"
+        "Выбери торговую пару:",
+        reply_markup=market_menu(),
+    )
+
+
 @router.message(Command("ai_menu"))
 async def cmd_ai_menu(message: types.Message):
     await message.answer(
-        "📊 <b>Radar AI</b>\n\n"
+        "📊 <b>Radar AI — AI-меню</b>\n\n"
         "Выбери торговую пару для анализа:",
         reply_markup=market_menu(),
     )
 
+
+# ---------- CALLBACKS ----------
 
 @router.callback_query(F.data == "back:markets")
 async def back_to_markets(callback: types.CallbackQuery):
@@ -103,22 +110,16 @@ async def select_pair(callback: types.CallbackQuery):
 
 @router.callback_query(F.data.startswith("analyze:"))
 async def analyze_pair(callback: types.CallbackQuery):
-    """
-    Запуск AI-аналитики + картинки.
-    callback_data формат: analyze:btc:1h
-    """
     _, pair_code, timeframe = callback.data.split(":", 2)
     pair_name = PAIRS.get(pair_code, pair_code.upper())
 
     await callback.answer("⚡ Делаю AI-анализ...")
 
-    # Черновой «заглушка»-сообщение, чтобы пользователь что-то видел
     await callback.message.edit_text(
         f"⏳ Запускаю AI-анализ по <b>{pair_name}</b> ({timeframe})...\n\n"
-        f"Обычно это занимает 3–5 секунд.",
+        f"Обычно это занимает несколько секунд.",
     )
 
-    # 1) Текстовый анализ
     try:
         analysis_text = await _generate_ai_analysis(pair_name, timeframe)
     except Exception as e:
@@ -127,7 +128,6 @@ async def analyze_pair(callback: types.CallbackQuery):
         )
         return
 
-    # 2) Картинка с анализом
     try:
         image_url = await _generate_ai_image(
             pair_name,
@@ -137,7 +137,6 @@ async def analyze_pair(callback: types.CallbackQuery):
     except Exception:
         image_url = None
 
-    # 3) Красивый финальный ответ
     caption = (
         f"📊 <b>Radar AI — премиальный обзор</b>\n\n"
         f"Пара: <b>{pair_name}</b>\n"
@@ -151,7 +150,6 @@ async def analyze_pair(callback: types.CallbackQuery):
     else:
         await callback.message.answer(caption)
 
-    # Можно добавить повторный вызов меню
     await callback.message.answer(
         "Хочешь ещё анализ? Выбери новую пару 👇",
         reply_markup=market_menu(),
