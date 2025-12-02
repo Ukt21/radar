@@ -9,8 +9,7 @@ from ..keyboards.ai_menu import (
     ai_profile_menu,
 )
 
-
-from ai_client import get_ai_analysis, get_ai_analysis_image
+from ..ai_client import get_ai_analysis, get_ai_analysis_image
 
 router = Router()
 
