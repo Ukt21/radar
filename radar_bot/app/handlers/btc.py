@@ -1,5 +1,5 @@
 from aiogram import Router, types, F
-from app.services.api_client import backend_get
+from ..services.api_client import backend_get
 
 router = Router()
 
