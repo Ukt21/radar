@@ -2,7 +2,7 @@ fastapi==0.115.2
 uvicorn[standard]==0.32.0
 httpx==0.28.1
 python-dotenv==1.0.1
-pydantic==2.9.2
+pydantic==2.8.2
 aiogram==3.13.0
 openai>=1.56.0
 ccxt>=4.4.0
