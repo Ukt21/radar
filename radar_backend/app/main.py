@@ -8,6 +8,9 @@ from .services.ai_analysis import make_ai_analysis
 
 app = FastAPI(title="Radar Backend", version="1.0.0")
 
+@app.get("/")
+async def index():
+    return {"status": "ok", "message": "Radar backend is running 🚀"}
 
 @app.get("/health")
 async def health() -> Dict[str, str]:
