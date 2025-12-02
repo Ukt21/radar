@@ -4,7 +4,7 @@ import asyncio
 
 import httpx
 
-from .config import MEMPOOL_API_URL, WHALE_ADDRESSES
+from radar_backend.app.config import MEMPOOL_API_URL, WHALE_ADDRESSES
 
 
 async def _fetch_address_stats(client: httpx.AsyncClient, address: str) -> dict:
