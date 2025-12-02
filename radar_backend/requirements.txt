@@ -8,3 +8,4 @@ ccxt
 pandas
 openai>=1.40.0
 pillow
+
