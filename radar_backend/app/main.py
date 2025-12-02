@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException, Query
 from typing import Dict, Any
 
-from app.services.market import fetch_klines
-from app.services.indicators import ema, rsi, obv, build_summary
-from app.services.liquidity import detect_liquidity_levels
+from .services.market import fetch_klines
+from .services.indicators import ema, rsi, obv, build_summary
+from .services.liquidity import detect_liquidity_levels
 
 app = FastAPI(title="Radar Backend", version="1.0.0")
 
