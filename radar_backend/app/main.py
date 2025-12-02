@@ -4,7 +4,6 @@ from typing import Dict, Any
 from fastapi import FastAPI, Query
 from .services.market import build_signals
 from .services.whales import summarize_whales
-from .services.ai_analysis import make_ai_analysis
 
 app = FastAPI(title="Radar Backend", version="1.0.0")
 
