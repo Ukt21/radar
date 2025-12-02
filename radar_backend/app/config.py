@@ -1,6 +1,10 @@
 
 import os
 from dotenv import load_dotenv
+import os
+
+MEMPOOL_API_URL = os.getenv("MEMPOOL_API_URL")
+WHALE_ADDRESSES = os.getenv("WHALE_ADDRESSES", "").split(",")
 
 load_dotenv()
 
