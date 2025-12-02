@@ -1,33 +1,52 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-def market_menu():
+# Коды пар: короткий код → красивое название
+PAIRS = {
+    "btc": "BTC/USDT",
+    "eth": "ETH/USDT",
+    "sui": "SUI/USDT",
+    "sol": "SOL/USDT",
+}
+
+
+def market_menu() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="BTC/USDT", callback_data="pair_btc"),
-                InlineKeyboardButton(text="ETH/USDT", callback_data="pair_eth"),
+                InlineKeyboardButton(text="BTC/USDT", callback_data="pair:btc"),
+                InlineKeyboardButton(text="ETH/USDT", callback_data="pair:eth"),
             ],
             [
-                InlineKeyboardButton(text="SUI/USDT", callback_data="pair_sui"),
-                InlineKeyboardButton(text="SOL/USDT", callback_data="pair_sui"),
+                InlineKeyboardButton(text="SUI/USDT", callback_data="pair:sui"),
+                InlineKeyboardButton(text="SOL/USDT", callback_data="pair:sol"),
             ],
-            [
-                InlineKeyboardButton(text="Выбрать таймфрейм ⏱️", callback_data="tf_menu"),
-            ]
         ]
     )
 
 
-def timeframe_menu():
+def timeframe_menu(pair_code: str) -> InlineKeyboardMarkup:
+    # pair_code: btc / eth / ...
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="15m", callback_data="tf_15m"),
-                InlineKeyboardButton(text="1h", callback_data="tf_1h"),
-                InlineKeyboardButton(text="4h", callback_data="tf_4h"),
+                InlineKeyboardButton(
+                    text="15m",
+                    callback_data=f"analyze:{pair_code}:15m",
+                ),
+                InlineKeyboardButton(
+                    text="1h",
+                    callback_data=f"analyze:{pair_code}:1h",
+                ),
+                InlineKeyboardButton(
+                    text="4h",
+                    callback_data=f"analyze:{pair_code}:4h",
+                ),
             ],
             [
-                InlineKeyboardButton(text="Назад ↩️", callback_data="back_market"),
-            ]
+                InlineKeyboardButton(
+                    text="← Другую пару",
+                    callback_data="back:markets",
+                )
+            ],
         ]
     )
