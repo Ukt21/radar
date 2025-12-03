@@ -11,6 +11,7 @@ from ..keyboards.ai_menu import (
 )
 
 from ..ai_client import get_ai_analysis, get_ai_analysis_image
+from radar_bot.ai_menu import ai_menu_router
 
 router = Router()
 
