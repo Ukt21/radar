@@ -8,4 +8,7 @@ ccxt
 pandas
 openai>=1.40.0
 pillow
-
+aiogram==3.4.1
+pydantic-settings==2.2.1
+asyncpg==0.29.0
+starlette==0.36.3
