@@ -5,6 +5,11 @@ from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
 
+from radar_bot.app.handlers.ai_menu import ai_menu_router
+
+def setup_routers(dp):
+    dp.include_router(ai_menu_router)
+
 
 def setup_routers(dp: Dispatcher) -> None:
     dp.include_router(main_menu_router)
