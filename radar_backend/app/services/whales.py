@@ -6,6 +6,10 @@ import httpx
 
 from radar_backend.app.config import MEMPOOL_API_URL, WHALE_ADDRESSES
 
+async def get_whales(symbol: str):
+    # Заглушка — потом подключим Glassnode/CryptoQuant
+    return "neutral", "0 USDT"
+
 
 async def _fetch_address_stats(client: httpx.AsyncClient, address: str) -> dict:
     resp = await client.get(f"{MEMPOOL_API_URL}/address/{address}")
