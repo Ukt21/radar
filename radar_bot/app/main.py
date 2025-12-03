@@ -5,8 +5,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
 
-from .ai_menu import router as ai_menu_router
-
+from radar_bot.app.ai_menu import ai_menu_router
 
 async def main():
     bot = Bot(
