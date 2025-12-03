@@ -1,5 +1,6 @@
 from aiogram import Router, types
 from aiogram.filters import Command
+from radar_bot.app.ai_menu.router import ai_menu_router
 from ..keyboards.ai_menu import (
     ai_main_menu,
     ai_symbol_menu,
